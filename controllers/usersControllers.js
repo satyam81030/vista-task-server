@@ -121,7 +121,7 @@ exports.addOrUpdateUserMeta = async (req, res) => {
 
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await users.find(); // Get all users
+    const users = await User.find(); // Get all users
 
     const userMetaPromises = users.map(async (user) => {
       const userMeta = await UserMeta.find({ userId: user._id });
