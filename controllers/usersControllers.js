@@ -14,12 +14,14 @@ exports.addUser = async (req, res) => {
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
-
+    
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(adminPassword, salt);
     // Create new user
     user = new User({
       username,
       email,  
-      password,
+      password:hashedPassword,
       accountType: 'User'
     });
 
@@ -35,7 +37,7 @@ exports.addUser = async (req, res) => {
 exports.getUserById = async (req, res) => {
   try {
     const userId = req.params.id;
-    const user = await User.findById(userId).select("-password"); // Exclude password from response
+    const user = await UserMeta.findById(userId).select("-password"); // Exclude password from response
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -49,7 +51,6 @@ exports.getUserById = async (req, res) => {
 exports.addOrUpdateUserMeta = async (req, res) => {
   try {
     const {
-      userId,
       firstName,
       lastName,
       fatherName,
@@ -80,7 +81,7 @@ exports.addOrUpdateUserMeta = async (req, res) => {
 
     // Find existing UserMeta document or create a new one
     let userMeta = await UserMeta.findOneAndUpdate(
-      { userId },
+      { userId: req.user.userId },
       {
         firstName,
         lastName,
