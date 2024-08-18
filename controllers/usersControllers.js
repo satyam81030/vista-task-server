@@ -32,10 +32,11 @@ exports.addUser = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => { ba2z                                              
+exports.getUserById = async (req, res) => {                                               
   try {
     const userId = req.params.id;
     const user = await UserMeta.findById(userId).select("-password"); // Exclude password from response
+    console.log(user)
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
