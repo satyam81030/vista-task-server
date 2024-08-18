@@ -35,7 +35,7 @@ exports.addUser = async (req, res) => {
 exports.getUserById = async (req, res) => {                                               
   try {
     const userId = req.params.id;
-    const user = await UserMeta.findById(userId).select("-password"); // Exclude password from response
+    const user = await UserMeta.findById(userId) // Exclude password from response
     console.log(user)
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -123,17 +123,7 @@ exports.getAllUsers = async (req, res) => {
   try {
     const users = await User.find(); // Get all users
 
-    const userMetaPromises = users.map(async (user) => {
-      const userMeta = await UserMeta.find({ userId: user._id });
-      return {
-        user,
-        meta: userMeta,
-      };
-    });
-
-    const usersWithMeta = await Promise.all(userMetaPromises);
-
-    res.status(200).json(usersWithMeta);
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -142,7 +132,7 @@ exports.getAllUsers = async (req, res) => {
 // Get UserMeta by User ID
 exports.getUserMetaByUserId = async (req, res) => {
   try {
-    const userId = req.params.userId;
+    const userId = req.params.id;
     const userMeta = await UserMeta.find({ userId });
     res.status(200).json(userMeta);
   } catch (err) {
