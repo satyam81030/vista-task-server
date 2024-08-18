@@ -117,13 +117,24 @@ exports.addOrUpdateUserMeta = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-
 exports.getAllUsers = async (req, res) => {
   try {
-    const users = await User.find(); // Get all users
+    // Get page and limit from query, or set defaults
+    const skip = parseInt(req.query.skip) || 1;
+    const take = parseInt(req.query.take) || 10;
 
-    res.status(200).json(users);
+
+    // Get total number of users
+    const totalUsers = await User.countDocuments();
+
+    // Get users for the current page
+    const users = await User.find()
+      .skip(skip) // Skip the previous pages
+      .limit(take);    // Limit to the number of users per page
+
+
+    // Meta information about pagination
+    res.status(200).json({count: totalUsers, skip, take, users});
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
