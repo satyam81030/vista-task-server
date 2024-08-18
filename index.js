@@ -7,12 +7,28 @@ const cors = require("cors");
 
 const app = express();
 
-// CORS setup
+// List of allowed origins
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:3001',
+  'http://localhost:3002',
+];
+
+// CORS middleware with dynamic origin function
 app.use(cors({
-  origin: 'http://localhost:3000', // Adjust this to your frontend's origin
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
-  credentials: true // Allow credentials if needed
+  credentials: true // Enable this if your frontend needs to send cookies or other credentials
 }));
 
 // Preflight request handling
