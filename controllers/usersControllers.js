@@ -1,6 +1,6 @@
 const UserMeta = require("../models/UserMeta");
-const bcrypt = require("bcryptjs");
-// Add or Update UserMeta
+const bcrypt = require("bcrypt");
+// Add or Update UserMetam
 
 const User = require("../models/User");
 
@@ -14,14 +14,12 @@ exports.addUser = async (req, res) => {
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
-    
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
+  
     // Create new user
     user = new User({
       username,
       email,  
-      password:hashedPassword,
+      password,
       accountType: 'User'
     });
 
@@ -34,7 +32,7 @@ exports.addUser = async (req, res) => {
   }
 };
 
-exports.getUserById = async (req, res) => {
+exports.getUserById = async (req, res) => { ba2z                                              
   try {
     const userId = req.params.id;
     const user = await UserMeta.findById(userId).select("-password"); // Exclude password from response
