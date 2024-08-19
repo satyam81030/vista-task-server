@@ -1,5 +1,5 @@
 const UserMeta = require("../models/UserMeta");
-const bcrypt = require("bcrypt");
+
 // Add or Update UserMetam
 
 const User = require("../models/User");
