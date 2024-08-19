@@ -9,6 +9,7 @@ const app = express();
 
 // List of allowed origins
 const allowedOrigins = [
+  'https://admin-theta-umber.vercel.app',
   'http://localhost:3000',
   'http://localhost:3001',
   'http://localhost:3002',
