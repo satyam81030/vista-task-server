@@ -36,7 +36,7 @@ exports.login = async (req, res) => {
       { userId: user._id, accountType: user.accountType },
       JWT_SECRET
     );
-    res.status(200).json({ type: user.accountType, token, id: user.id });
+    return res.status(200).json({ type: user.accountType, token });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
