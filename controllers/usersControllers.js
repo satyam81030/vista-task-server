@@ -117,6 +117,80 @@ exports.addOrUpdateUserMeta = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.addOrUpdateUserMetaById = async (req, res) => {
+
+  try {
+    const userId = req.params.id;
+    const {
+      firstName,
+      lastName,
+      fatherName,
+      currentAddress,
+      permanentAddress,
+      contactNumber,
+      alternateNumber,
+      emergencyNumber,
+      emailId,
+      relativeName,
+      relativeRelation,
+      relativeNumber,
+      currentWorkingCompanyName,
+      companyAddress,
+      companyContactNumber,
+      contactPersonName,
+      insuranceStatus,
+      agentName,
+      agentEmployeeId,
+      verifyExecutive,
+      verifyName,
+      verifyEmployeeId,
+      verifyNumber,
+      finalStatus,
+      insurancePrice,
+      remark,
+    } = req.body;
+
+    // Find existing UserMeta document or create a new one
+    let userMeta = await UserMeta.findOneAndUpdate(
+      { userId },
+      {
+        firstName,
+        lastName,
+        fatherName,
+        currentAddress,
+        permanentAddress,
+        contactNumber,
+        alternateNumber,
+        emergencyNumber,
+        emailId,
+        relativeName,
+        relativeRelation,
+        relativeNumber,
+        currentWorkingCompanyName,
+        companyAddress,
+        companyContactNumber,
+        contactPersonName,
+        insuranceStatus,
+        agentName,
+        agentEmployeeId,
+        verifyExecutive,
+        verifyName,
+        verifyEmployeeId,
+        verifyNumber,
+        finalStatus,
+        insurancePrice,
+        remark,
+      },
+      { new: true, upsert: true } // Create a new document if not found
+    );
+
+    res.status(200).json({ message: "User metadata updated successfully", userMeta });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.getAllUsers = async (req, res) => {
   try {
     // Get page and limit from query, or set defaults
