@@ -8,9 +8,6 @@ const seedAdmin = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
 
-    const adminEmail = 'admin@vista.com';
-    const adminPassword = 'Admin123!@#'; // Change this to a secure password
-
     // Check if admin user already exists
     const existingAdmin = await User.findOne({ email: adminEmail });
     if (existingAdmin) {
