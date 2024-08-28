@@ -108,8 +108,6 @@ exports.addOrUpdateUserMeta = async (req, res) => {
       insurancePrice,
       remark
     });
-console.log(userMeta)
-    // Save the new UserMeta document
     await userMeta.save();
 
     res.status(201).json({ message: "User metadata created successfully", userMeta });
@@ -152,9 +150,8 @@ exports.addOrUpdateUserMetaById = async (req, res) => {
     } = req.body;
 
     // Find existing UserMeta document or create a new one
-    let userMeta = await UserMeta.findOneAndUpdate(
-      { userId },
-      {
+    let userMeta = new UserMeta(
+      { userId,
         firstName,
         lastName,
         fatherName,
@@ -181,11 +178,12 @@ exports.addOrUpdateUserMetaById = async (req, res) => {
         finalStatus,
         insurancePrice,
         remark,
-      },
-      { new: true, upsert: true } // Create a new document if not found
+      }
     );
 
-    res.status(200).json({ message: "User metadata updated successfully", userMeta });
+    await userMeta.save()
+
+    res.status(200).json({ message: "User metadata created successfully", userMeta });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
