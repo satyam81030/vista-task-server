@@ -27,7 +27,7 @@ const userMetaSchema = new Schema({
   // Insurance Information
   insuranceStatus: {
     type: String,
-    enum: ["new customer", "existing customer"],
+    enum: ["new_customer", "existing_customer"],
     required: true,
   },
   insurancePrice: { type: Number, required: true },
@@ -43,7 +43,7 @@ const userMetaSchema = new Schema({
   verifyNumber: { type: String },
   finalStatus: {
     type: String,
-    enum: ["Verification complete", "Incomplete verification", "File rejected"],
+    enum: ["verification_complete", "incomplete_verification", "file_rejected"],
     required: true,
   },
 
