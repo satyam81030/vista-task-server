@@ -80,7 +80,7 @@ exports.addOrUpdateUserMeta = async (req, res) => {
 
     // Find existing UserMeta document or create a new one
     let userMeta =  new  UserMeta(
-      {userId: req.user.userId
+      {userId: req.user.userId,
         firstName,
         lastName,
         fatherName,
