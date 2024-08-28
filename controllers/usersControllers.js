@@ -108,7 +108,7 @@ exports.addOrUpdateUserMeta = async (req, res) => {
       insurancePrice,
       remark
     });
-
+console.log(userMeta)
     // Save the new UserMeta document
     await userMeta.save();
 
