@@ -27,7 +27,7 @@ exports.login = async (req, res) => {
     // Define allowed login hours
     const startHour = 9;
     const startMinute = 0;
-    const endHour = 18;
+    const endHour = 19;
     const endMinute = 45;
 
     // Check if current time is within the allowed login hours
