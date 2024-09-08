@@ -10,6 +10,8 @@ const app = express();
 // List of allowed origins
 const allowedOrigins = [
   'https://vista-user.vercel.app',
+  'https://vista-user-ef4rlgjrb-vista-task.vercel.app',
+   'https://vista-user.vercel.app',
   'https://vista-admin.vercel.app',
   'http://localhost:3000',
   'http://localhost:3001',
