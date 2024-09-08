@@ -1,5 +1,5 @@
 const UserMeta = require("../models/UserMeta");
-
+const UsersData = require("../models/UsersData");
 // Add or Update UserMetam
 
 const User = require("../models/User");
@@ -7,19 +7,19 @@ const User = require("../models/User");
 // Add User
 exports.addUser = async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { employeeId, employeeName, employeeMobileNumber } = req.body;
 
     // Check if user already exists
-    let user = await User.findOne({ email });
+    let user = await User.findOne({ employeeId });
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
   
     // Create new user
     user = new User({
-      username,
-      email,  
-      password,
+      employeeId,
+      employeeName,  
+      employeeMobileNumber,
       accountType: 'User'
     });
 
@@ -189,6 +189,110 @@ exports.addOrUpdateUserMetaById = async (req, res) => {
   }
 };
 
+
+exports.addUserMeta = async (req, res) => {
+  try {
+    const {
+      employeeId,
+      businessName,
+      address,
+      city,
+      state,
+      pinCode,
+      whatsappNumber,
+      phoneNumber,
+      gstNumber,
+      yearOfEstablishment,
+      rating,
+      sourcesLink,
+      sourcesPlatform
+    } = req.body;
+
+    // Check if user exists
+    const user = await User.findById(req.user.userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Create a new UserMeta document
+    const userMeta = new UsersData({
+      userId: req.user.userId,
+      employeeId,
+      businessName,
+      address,
+      city,
+      state,
+      pinCode,
+      whatsappNumber,
+      phoneNumber,
+      gstNumber,
+      yearOfEstablishment,
+      rating,
+      sourcesLink,
+      sourcesPlatform
+    });
+
+    // Save the UserMeta document
+    await UsersData.save();
+
+    res.status(201).json({ message: "User metadata created successfully", userMeta });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+exports.addUserMetaById = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const {
+      employeeId,
+      businessName,
+      address,
+      city,
+      state,
+      pinCode,
+      whatsappNumber,
+      phoneNumber,
+      gstNumber,
+      yearOfEstablishment,
+      rating,
+      sourcesLink,
+      sourcesPlatform
+    } = req.body;
+
+    // Check if user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Create a new UserMeta document
+    const userMeta = new UsersData({
+      userId,
+      employeeId,
+      businessName,
+      address,
+      city,
+      state,
+      pinCode,
+      whatsappNumber,
+      phoneNumber,
+      gstNumber,
+      yearOfEstablishment,
+      rating,
+      sourcesLink,
+      sourcesPlatform
+    });
+
+    // Save the UserMeta document
+    await UsersData.save();
+
+    res.status(201).json({ message: "User metadata created successfully", userMeta });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
 exports.getAllUsers = async (req, res) => {
   try {
     // Get page and limit from query, or set defaults
@@ -216,8 +320,8 @@ exports.getAllUsers = async (req, res) => {
 exports.getUserMetaByUserId = async (req, res) => {
   try {
     const userId = req.params.id;
-    const userMeta = await UserMeta.find({ userId });
-    res.status(200).json(userMeta);
+    const userData = await UsersData.find({ userId });
+    res.status(200).json(userData);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
