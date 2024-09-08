@@ -9,12 +9,11 @@ exports.addUser = async (req, res) => {
   try {
     const { employeeId, employeeName, employeeMobileNumber, password } = req.body;
 
-    // Check if user already exists
     let user = await User.findOne({ employeeId });
     if (user) {
       return res.status(400).json({ message: "User already exists" });
     }
-  
+
     // Create new user
     user = new User({
       employeeId,
@@ -23,6 +22,7 @@ exports.addUser = async (req, res) => {
       employeeMobileNumber,
       accountType: 'User'
     });
+
     // Save user to database
     await user.save();
 
@@ -206,7 +206,7 @@ exports.addUserMeta = async (req, res) => {
       sourcesLink,
       sourcesPlatform
     } = req.body;
-
+  
     // Check if user exists
     const user = await User.findById(req.user.userId);
     if (!user) {
@@ -214,7 +214,7 @@ exports.addUserMeta = async (req, res) => {
     }
 
     // Create a new UserMeta document
-    const userMeta = new UsersData({
+    const userData = new UsersData({
       userId: req.user.userId,
       employeeId,
       businessName,
@@ -232,7 +232,7 @@ exports.addUserMeta = async (req, res) => {
     });
 
     // Save the UserMeta document
-    await UsersData.save();
+    await userData.save();
 
     res.status(201).json({ message: "User metadata created successfully", userMeta });
   } catch (err) {
@@ -266,7 +266,7 @@ exports.addUserMetaById = async (req, res) => {
     }
 
     // Create a new UserMeta document
-    const userMeta = new UsersData({
+    const userData = new UsersData({
       userId,
       employeeId,
       businessName,
@@ -284,7 +284,7 @@ exports.addUserMetaById = async (req, res) => {
     });
 
     // Save the UserMeta document
-    await UsersData.save();
+    await userData.save();
 
     res.status(201).json({ message: "User metadata created successfully", userMeta });
   } catch (err) {
