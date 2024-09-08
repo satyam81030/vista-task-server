@@ -17,7 +17,9 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { id, password, type } = req.body;   
+    console.log("hek")
+    let { id, password, type } = req.body;   
+    console.log(id, password, type)
     let user = type='admin' ? await User.findOne({email: id}) : await User.findOne({employeeId:id  });
     console.log(user)
     if (!user) {
@@ -25,14 +27,14 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    let isPasswordMatch = await bcrypt.compare(password, user.password);
  
 
     if (!isPasswordMatch) {
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign(
+    let token = jwt.sign(
       { userId: user._id, accountType: user.accountType },
       JWT_SECRET
     );
