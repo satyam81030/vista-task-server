@@ -234,7 +234,7 @@ exports.addUserMeta = async (req, res) => {
     // Save the UserMeta document
     await userData.save();
 
-    res.status(201).json({ message: "User metadata created successfully", userMeta });
+    res.status(201).json({ message: "User metadata created successfully", userData });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -286,7 +286,7 @@ exports.addUserMetaById = async (req, res) => {
     // Save the UserMeta document
     await userData.save();
 
-    res.status(201).json({ message: "User metadata created successfully", userMeta });
+    res.status(201).json({ message: "User metadata created successfully", userData });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
