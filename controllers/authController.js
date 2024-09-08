@@ -18,7 +18,7 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { id, password, type } = req.body;   
-    const user = type='admin' ? await User.findOne({email: id}) : await User.findOne({employeeId:id  });
+    let user = type='admin' ? await User.findOne({email: id}) : await User.findOne({employeeId:id  });
     console.log(user)
     if (!user) {
       console.log("User not found with id:", email);
