@@ -7,7 +7,7 @@ const User = require("../models/User");
 // Add User
 exports.addUser = async (req, res) => {
   try {
-    const { employeeId, employeeName, employeeMobileNumber } = req.body;
+    const { employeeId, employeeName, employeeMobileNumber, password } = req.body;
 
     // Check if user already exists
     let user = await User.findOne({ employeeId });
@@ -19,10 +19,10 @@ exports.addUser = async (req, res) => {
     user = new User({
       employeeId,
       employeeName,  
+      password,
       employeeMobileNumber,
       accountType: 'User'
     });
-
     // Save user to database
     await user.save();
 
@@ -36,7 +36,6 @@ exports.getUserById = async (req, res) => {
   try {
     const userId = req.params.id;
     const user = await UserMeta.findById(userId) // Exclude password from response
-    console.log(user)
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }

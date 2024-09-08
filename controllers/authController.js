@@ -17,13 +17,9 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    console.log("hek")
     let { id, password, type } = req.body;   
-    console.log(id, password, type)
-    let user = type='admin' ? await User.findOne({email: id}) : await User.findOne({employeeId:id  });
-    console.log(user)
+    let user = await User.findOne({employeeId:id  });
     if (!user) {
-      console.log("User not found with id:", email);
       return res.status(400).json({ message: "Invalid credentials" });
     }
 
