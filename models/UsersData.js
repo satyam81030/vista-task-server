@@ -3,11 +3,6 @@ const Schema = mongoose.Schema;
 
 
 const userDataSchema = new Schema({
-    userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    employeeId: {
-        type: String,
-        required: true,
-      },
     businessName: {
         type: String,
         required: true
@@ -51,6 +46,19 @@ const userDataSchema = new Schema({
     sourcesPlatform: {
         type: String
     },
+    employeeId: {
+        type: String,
+        required: true,
+      },
+      employeeName: {
+        type: String,
+        required: true
+      },
+      employeeMobileNumber: {
+        type: String,
+        required: true
+      },
+      userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
 });
 
 const UserData = mongoose.model('UserData', userDataSchema);

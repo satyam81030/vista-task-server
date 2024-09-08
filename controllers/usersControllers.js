@@ -204,7 +204,9 @@ exports.addUserMeta = async (req, res) => {
       yearOfEstablishment,
       rating,
       sourcesLink,
-      sourcesPlatform
+      sourcesPlatform,
+      employeeName,
+      employeeMobileNumber
     } = req.body;
   
     // Check if user exists
@@ -215,8 +217,6 @@ exports.addUserMeta = async (req, res) => {
 
     // Create a new UserMeta document
     const userData = new UsersData({
-      userId: req.user.userId,
-      employeeId,
       businessName,
       address,
       city,
@@ -228,7 +228,11 @@ exports.addUserMeta = async (req, res) => {
       yearOfEstablishment,
       rating,
       sourcesLink,
-      sourcesPlatform
+      sourcesPlatform,
+      employeeId,
+      employeeName,
+      employeeMobileNumber,
+      userId: req.user.userId,
     });
 
     // Save the UserMeta document
@@ -256,7 +260,9 @@ exports.addUserMetaById = async (req, res) => {
       yearOfEstablishment,
       rating,
       sourcesLink,
-      sourcesPlatform
+      sourcesPlatform,
+      employeeName,
+      employeeMobileNumber
     } = req.body;
 
     // Check if user exists
@@ -267,8 +273,6 @@ exports.addUserMetaById = async (req, res) => {
 
     // Create a new UserMeta document
     const userData = new UsersData({
-      userId,
-      employeeId,
       businessName,
       address,
       city,
@@ -280,7 +284,11 @@ exports.addUserMetaById = async (req, res) => {
       yearOfEstablishment,
       rating,
       sourcesLink,
-      sourcesPlatform
+      sourcesPlatform,
+      employeeId,
+      employeeName,
+      employeeMobileNumber,
+      userId
     });
 
     // Save the UserMeta document
