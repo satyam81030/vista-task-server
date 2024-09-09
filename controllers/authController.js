@@ -31,12 +31,12 @@ exports.login = async (req, res) => {
     const endMinute = 0;
 
     // Check if current time is within the allowed login hours
-    if (
-     type==='user' && (currentHour < startHour || (currentHour === startHour && currentMinute < startMinute)) ||
-      (currentHour > endHour || (currentHour === endHour && currentMinute > endMinute))
-    ) {
-      return res.status(403).json({ message: "Login is only allowed between 9:00 AM and 6:45 PM" });
-    }
+    // if (
+    //  type==='user' && (currentHour < startHour || (currentHour === startHour && currentMinute < startMinute)) ||
+    //   (currentHour > endHour || (currentHour === endHour && currentMinute > endMinute))
+    // ) {
+    //   return res.status(403).json({ message: "Login is only allowed between 9:00 AM and 6:45 PM" });
+    // }
 
     // Check if the user exists
     let user = await User.findOne({ employeeId: id });
