@@ -19,45 +19,52 @@ exports.login = async (req, res) => {
   try {
     const { id, password, type } = req.body;
 
-    // Get current server time
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
+    // // Get current server time
+    // const now = new Date();
+    // const currentHour = now.getHours();
+    // const currentMinute = now.getMinutes();
 
-    // Define allowed login hours
-    const startHour = 9;
-    const startMinute = 0;
-    const endHour = 17;
-    const endMinute = 0;
+    // // Define allowed login hours
+    // const startHour = 9;
+    // const startMinute = 0;
+    // const endHour = 17;
+    // const endMinute = 0;
 
-    // Check if current time is within the allowed login hours
-    // if (
-    //  type==='user' && (currentHour < startHour || (currentHour === startHour && currentMinute < startMinute)) ||
-    //   (currentHour > endHour || (currentHour === endHour && currentMinute > endMinute))
-    // ) {
-    //   return res.status(403).json({ message: "Login is only allowed between 9:00 AM and 6:45 PM" });
-    // }
+    const currentHour = new Date().getHours();
 
-    // Check if the user exists
-    let user = await User.findOne({ employeeId: id });
-    if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
+    // Check if current time is between 9 AM (9) and 5 PM (17)
+    if ((currentHour >= 9 && currentHour < 17) || type==='admin') {
+      // Check if current time is within the allowed login hours
+      // if (
+      //  type==='user' && (currentHour < startHour || (currentHour === startHour && currentMinute < startMinute)) ||
+      //   (currentHour > endHour || (currentHour === endHour && currentMinute > endMinute))
+      // ) {
+      //   return res.status(403).json({ message: "Login is only allowed between 9:00 AM and 6:45 PM" });
+      // }
+
+      // Check if the user exists
+      let user = await User.findOne({ employeeId: id });
+      if (!user) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      }
+
+      // Check if the password matches
+      let isPasswordMatch = await bcrypt.compare(password, user.password);
+      if (!isPasswordMatch) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      }
+
+      // Generate JWT token
+      let token = jwt.sign(
+        { userId: user._id, accountType: user.accountType },
+        JWT_SECRET
+      );
+
+      // Respond with token and user account type
+      return res.status(200).json({ type: user.accountType, token });
+    } else {
+      res.status(403).json({ error: 'Access is allowed only between 9 AM and 5 PM.' });
     }
-
-    // Check if the password matches
-    let isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (!isPasswordMatch) {
-      return res.status(400).json({ message: "Invalid credentials" });
-    }
-
-    // Generate JWT token
-    let token = jwt.sign(
-      { userId: user._id, accountType: user.accountType },
-      JWT_SECRET
-    );
-
-    // Respond with token and user account type
-    return res.status(200).json({ type: user.accountType, token });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
