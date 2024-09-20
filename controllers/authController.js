@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
     // const endMinute = 0;
 
     const currentHour = new Date().getHours();
-
+       console.log(currentHour)
     // Check if current time is between 9 AM (9) and 5 PM (17)
     if ((currentHour >= 9 && currentHour < 17) || type==='admin') {
       // Check if current time is within the allowed login hours
