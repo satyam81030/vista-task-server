@@ -63,7 +63,7 @@ exports.login = async (req, res) => {
       // Respond with token and user account type
       return res.status(200).json({ type: user.accountType, token });
     } else {
-      res.status(403).json({ error: 'Access is allowed only between 9 AM and 5 PM.' });
+      res.status(403).json({ message: 'Access is allowed only between 9 AM and 5 PM.' });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
