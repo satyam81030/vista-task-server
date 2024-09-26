@@ -19,29 +19,15 @@ exports.login = async (req, res) => {
   try {
     const { id, password, type } = req.body;
 
-    // // Get current server time
-    // const now = new Date();
-    // const currentHour = now.getHours();
-    // const currentMinute = now.getMinutes();
+    // Get the current time in GMT
+    let currentTime = new Date();
 
-    // // Define allowed login hours
-    // const startHour = 9;
-    // const startMinute = 0;
-    // const endHour = 17;
-    // const endMinute = 0;
+    // Adjust to IST (GMT + 5:30)
+    let istTime = new Date(currentTime.getTime() + (5.5 * 60 * 60 * 1000));
+    let currentHour = istTime.getHours();
 
-    const currentHour = new Date().getHours();
-    console.log(currentHour)
-    // Check if current time is between 9 AM (9) and 5 PM (17)
-    if ((currentHour >= 9 && currentHour < 17) || true) {
-      // Check if current time is within the allowed login hours
-      // if (
-      //  type==='user' && (currentHour < startHour || (currentHour === startHour && currentMinute < startMinute)) ||
-      //   (currentHour > endHour || (currentHour === endHour && currentMinute > endMinute))
-      // ) {
-      //   return res.status(403).json({ message: "Login is only allowed between 9:00 AM and 6:45 PM" });
-      // }
-
+    // Check if current time is between 9 AM (9) and 5 PM (17) IST
+    if ((currentHour >= 9 && currentHour < 17) || type === 'admin') {
       // Check if the user exists
       let user = await User.findOne({ employeeId: id });
       if (!user) {
@@ -63,11 +49,12 @@ exports.login = async (req, res) => {
       // Respond with token and user account type
       return res.status(200).json({ type: user.accountType, token });
     } else {
-      res.status(403).json({ message: 'Access is allowed only between 9 AM and 5 PM.' });
+      res.status(403).json({ message: 'Access is allowed only between 9 AM and 5 PM IST.' });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
 
 
