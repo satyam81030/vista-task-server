@@ -36,9 +36,7 @@ const userDataSchema = new Schema({
         type: Number
     },
     rating: {
-        type: Number,
-        min: 0,
-        max: 5
+        type: Number
     },
     sourcesLink: {
         type: String
