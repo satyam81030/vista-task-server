@@ -210,7 +210,7 @@ exports.addUserMeta = async (req, res) => {
     } = req.body;
 
     if(rating > 5){
-     res.status(403).json({ message: 'rating should be between 1 to 5' });
+    return res.status(403).json({ error: 'rating should be between 1 to 5' });
     }
     // Check if user exists
     const user = await User.findById(req.user.userId);
@@ -274,7 +274,7 @@ exports.addUserMetaById = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
         if(rating > 5){
-         res.status(403).json({ message: 'rating should be between 1 to 5' });
+       return res.status(403).json({ error: 'rating should be between 1 to 5' });
     }
 
     // Create a new UserMeta document
